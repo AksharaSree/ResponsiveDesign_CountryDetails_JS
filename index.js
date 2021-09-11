@@ -6,7 +6,9 @@ function getCountries() {
   xhttp.send();
   xhttp.onload = function() {
       var countries = JSON.parse(this.responseText);
-      onLoad(countries);
+      var highPopulationCountries =  countries.filter(cntry=> cntry.population > 100000000 );
+      highPopulationCountries.sort(compare);
+      onLoad(highPopulationCountries);
   }
 }
 
@@ -41,15 +43,25 @@ function onLoad(countriesInfo) {
                   </div>
               </div>`;
   
-  const divContianer = document.createElement('div');
-  divContianer.className = "container";
-  divContianer.innerHTML = countryHtml;
-  document.body.append(divContianer);
+    const divContianer = document.createElement('div');
+    divContianer.className = "container";
+    divContianer.innerHTML = countryHtml;
+    document.body.append(divContianer); 
   
+}
   
-    }
+function compare(a, b) {
+      // Use toUpperCase() to ignore character casing
+      const nameA = a.name.toUpperCase();
+      const nameB = b.name.toUpperCase();
+    
+      let comparison = 0;
+      if (nameA > nameB) {
+        comparison = 1;
+      } else if (nameA < nameB) {
+        comparison = -1;
+      }
+      return comparison;
+} 
   
-  
-  
-      window.onload = getCountries();
-  
+window.onload = getCountries();  
